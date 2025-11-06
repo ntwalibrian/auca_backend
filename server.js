@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken");
 const { createClient } = require("@supabase/supabase-js");
 
 app.use(express.json());
@@ -36,7 +37,7 @@ app.post("/student/signup", async (req, res) => {
 //login
 app.post("/students/login", async (req, res) => {
   try {
-    if (!req.bobdy.password || !req.boby.student_id) {
+    if (!req.body.password || !req.body.student_id) {
       return res.status(400).send("student_id and password are required");
     }
     const { data, error } = await supabase
@@ -52,7 +53,12 @@ app.post("/students/login", async (req, res) => {
     }
 
     if (await bcrypt.compare(req.body.password, data[0].password)) {
-      res.send("Success");
+      const token = jwt.sign(
+        { student_id: data[0].student_id },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+      res.json({ message: "success", token: token });
     } else {
       res.send("Not Allowed");
     }
