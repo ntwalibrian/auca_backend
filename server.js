@@ -36,6 +36,9 @@ app.post("/student/signup", async (req, res) => {
 //login
 app.post("/students/login", async (req, res) => {
   try {
+    if (!req.bobdy.password || !req.boby.student_id) {
+      return res.status(400).send("student_id and password are required");
+    }
     const { data, error } = await supabase
       .from("Students")
       .select("*")
