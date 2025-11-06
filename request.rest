@@ -19,3 +19,23 @@ Content-Type: application/json
     "name" : "Ntwali Brian Diouf",
     "password" : "password"
 }
+
+###
+POST http://localhost:3001/students/signup
+Content-Type: application/json
+
+{
+    "first_name" : "Ntwali",
+    "email": "ntwalib@gmail.com",
+    "student_id": "29838",
+    "password" : "password"
+}
+
+###
+POST http://localhost:3001/students/login
+Content-Type: application/json
+
+{
+    "student_id": "29838",
+    "password" : "password"
+}
